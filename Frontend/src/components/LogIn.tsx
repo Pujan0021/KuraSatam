@@ -37,7 +37,7 @@ const LogIn = () => {
               Email address
             </label>
             <input
-              className="block w-full bg-white mt-3 px-2 text-black"
+              className="block w-full bg-white mt-3 px-2 text-black py-0.5"
               type="email"
               name="email"
               value={email}
@@ -48,7 +48,7 @@ const LogIn = () => {
               Password
             </label>
             <input
-              className="block w-full text-black bg-white mt-3 px-2"
+              className="block w-full text-black bg-white mt-3 px-2 py-0.5"
               type="password"
               name="password"
               value={password}
