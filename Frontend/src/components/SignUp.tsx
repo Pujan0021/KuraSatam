@@ -1,11 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmitBtn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -17,6 +19,7 @@ const SignUp = () => {
     try {
       await axios.post("http://localhost:5000/api/auth/signup", formData);
       toast.success("Account created Successfully");
+      navigate("/login");
     } catch (error) {
       toast.error("Error creating an account");
     }
@@ -33,7 +36,7 @@ const SignUp = () => {
             <label className="block mt-5" htmlFor="name">
               Name
               <input
-                className="block w-full bg-white mt-3 px-2 text-black"
+                className="block w-full bg-white mt-3 px-2 py-0.5 text-black"
                 type="name"
                 name="name"
                 id="name"
@@ -45,7 +48,7 @@ const SignUp = () => {
             <label className="block mt-5" htmlFor="email">
               Email address
               <input
-                className="block w-full bg-white mt-3 px-2 text-black"
+                className="block w-full bg-white mt-3 px-2 py-0.5 text-black"
                 type="email"
                 name="email"
                 id="email"
@@ -58,7 +61,7 @@ const SignUp = () => {
             <label htmlFor="password" className="block mt-5">
               Password
               <input
-                className="block w-full text-black bg-white mt-3 px-2"
+                className="block w-full text-black bg-white mt-3 px-2 py-0.5"
                 type="password"
                 name="password"
                 id="password"
