@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const User = require("../models/Users.model");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 
 router.post("/signup", async (req, res) => {
@@ -42,6 +43,9 @@ router.post("/signup", async (req, res) => {
         });
     }
 });
+
+
+
 router.post("/signin", async (req, res) => {
     const { email, password } = req.body;
 
@@ -65,25 +69,29 @@ router.post("/signin", async (req, res) => {
         if (!isValid) {
             return res.status(401).json({
                 success: false,
-                message: "Email or password is wrong!"
+                message: "Incorrect credentials!"
             });
         }
 
         console.log("User logged in successfully");
 
         const token = jwt.sign(
-            { id: user._id, email: user.email },
+            { id: user._id, name: user.name },
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
-
-        res.cookie("token", token, { maxAge: 1000 * 60 * 60, httpOnly: true });
-
+        console.log("Token: ", token)
+        res.cookie("token", token, {
+            maxAge: 1000 * 60 * 60,
+            httpOnly: true,
+            secure: true,
+            sameSite: "none"
+        });
         res.status(200).json({
             success: true,
             message: "SignIn successful",
             user: { name: user.name, email: user.email },
-            token
+            token: token
         });
     } catch (e) {
         console.error(e);
@@ -95,8 +103,25 @@ router.post("/signin", async (req, res) => {
 });
 
 //Todo
-// router.post("/login", (req, res) => {
+// router.post("/logout", (req, res) => {
 
 // })
+
+
+
+router.get('/profile', (req, res) => {
+    const token = req.cookies?.token;
+    if (!token) return res.status(401).json({ success: false, message: "Token not found" });
+    console.log("token", token)
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        res.status(200).json({ name: decoded.name });
+    } catch (err) {
+        res.status(401).json({ error: 'Invalid token' });
+    }
+});
+
 
 module.exports = router;
