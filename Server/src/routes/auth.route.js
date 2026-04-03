@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const User = require("../models/Users.model");
 const jwt = require("jsonwebtoken");
+const authMiddleware = require("../midddleware/auth.middleware");
 require("dotenv").config();
 
 
@@ -102,14 +103,30 @@ router.post("/signin", async (req, res) => {
     }
 });
 
-//Todo
-// router.post("/logout", (req, res) => {
 
-// })
+router.post("/logout", (req, res) => {
+    try {
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none"
+        });
+        res.status(200).json({
+            success: true,
+            message: "Logout Successful"
+        })
+    } catch {
+        res.status(400).json({
+            success: false,
+            message: "Logout Failed!"
+        })
+
+    }
+})
 
 
 
-router.get('/profile', (req, res) => {
+router.get('/profile', authMiddleware, (req, res) => {
     const token = req.cookies?.token;
     if (!token) return res.status(401).json({ success: false, message: "Token not found" });
     console.log("token", token)
@@ -117,7 +134,7 @@ router.get('/profile', (req, res) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
-        res.status(200).json({ name: decoded.name });
+        res.status(200).json({ name: decoded.name, id: decoded._id });
     } catch (err) {
         res.status(401).json({ error: 'Invalid token' });
     }
