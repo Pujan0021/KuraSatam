@@ -16,7 +16,9 @@ const LogIn = () => {
     }
     const formData = { email, password };
     try {
-      await axios.post("http://localhost:5000/api/auth/signin", formData);
+      await axios.post("http://localhost:5000/api/auth/signin", formData, {
+        withCredentials: true,
+      });
       toast.success("Login Successfully");
       navigate("/");
     } catch (error) {
