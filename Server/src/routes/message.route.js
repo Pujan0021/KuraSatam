@@ -25,4 +25,13 @@ router.post("/sendMessage/:id", async (req, res) => {
         res.status(500).json({ success: false, message: "Server error", error: err.message });
     }
 });
+router.get("/message/:id", async (req, res) => {
+    try {
+        const receiver = req.params.id;
+        const messages = await Message.find({ receiver });
+        res.json(messages);
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Server error", error: err.message });
+    }
+});
 module.exports = router;
