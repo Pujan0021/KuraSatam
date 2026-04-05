@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const User = require("../models/Users.model");
 const jwt = require("jsonwebtoken");
-const authMiddleware = require("../midddleware/auth.middleware");
+const authMiddleware = require("../middleware/auth.middleware");
 require("dotenv").config();
 
 
@@ -83,7 +83,7 @@ router.post("/signin", async (req, res) => {
         );
         console.log("Token: ", token)
         res.cookie("token", token, {
-            maxAge: 1000 * 60 * 60,
+            maxAge: 100000000 * 60 * 60,
             httpOnly: true,
             secure: true,
             sameSite: "none"
@@ -129,7 +129,7 @@ router.post("/logout", (req, res) => {
 router.get('/profile', authMiddleware, (req, res) => {
     const token = req.cookies?.token;
     if (!token) return res.status(401).json({ success: false, message: "Token not found" });
-    console.log("token", token)
+    // console.log("token", token)
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
