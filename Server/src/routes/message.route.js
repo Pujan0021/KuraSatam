@@ -9,7 +9,7 @@ router.post("/sendMessage/:id", async (req, res) => {
 
     try {
         const { text } = req.body;
-        console.log(text)
+
         const newMessage = new Message({
             text: text,
             receiver: receiver
@@ -37,9 +37,9 @@ router.get("/message/:id", async (req, res) => {
 });
 
 router.get("/users", async (req, res) => {
+    console.log(req.user.id)
     try {
-        const users = await Users.find();
-        console.log(users);
+        const users = await Users.find({ _id: { $ne: req.user.id } });
         res.status(200).json(users)
     } catch (err) {
         console.log(err, "Error occured!")

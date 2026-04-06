@@ -4,7 +4,7 @@ const authRouter = require("./src/routes/auth.route.js")
 const MessageRouter = require("./src/routes/message.route.js")
 const dbConnect = require("./src/config/dbConnect");
 const cookieParser = require("cookie-parser");
-const authMiddleware = require("./src/midddleware/auth.middleware.js");
+const authMiddleware = require("./src/middleware/auth.middleware.js");
 const cors = require("cors");
 require("dotenv").config();
 const PORT = process.env.PORT;
@@ -17,7 +17,7 @@ app.use(cors({
 }))
 app.use(express.json());
 app.use("/api/auth", authRouter);
-app.use("/api/", authMiddleware, MessageRouter);
+app.use("/api", authMiddleware, MessageRouter);
 
 app.get("/", (req, res) => {
     res.send("<h2>Server is in Use</h2>")

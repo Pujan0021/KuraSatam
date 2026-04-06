@@ -81,9 +81,9 @@ router.post("/signin", async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
-        console.log("Token: ", token)
+        // console.log("Token: ", token)
         res.cookie("token", token, {
-            maxAge: 100000000 * 60 * 60,
+            maxAge: 100000 * 60 * 60,
             httpOnly: true,
             secure: true,
             sameSite: "none"
