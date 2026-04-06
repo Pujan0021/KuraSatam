@@ -28,6 +28,13 @@ const MessagePage = ({ messages, loading, id }: Props) => {
   const [user, setUser] = useState<string | null>(null);
 
   useEffect(() => {
+    const container = document.getElementById("message-container");
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }, [messages]);
+
+  useEffect(() => {
     const fetchUser = async () => {
       try {
         const { data } = await axios.get(
@@ -54,7 +61,10 @@ const MessagePage = ({ messages, loading, id }: Props) => {
       ) : !id ? (
         <SelectUser />
       ) : (
-        <ol className="h-60 overflow-y-scroll [&::-webkit-scrollbar]:hidden">
+        <ol
+          id="message-container"
+          className="h-60 overflow-y-scroll [&::-webkit-scrollbar]:hidden"
+        >
           {messages && messages.length > 0 ? (
             messages.map((msg) => {
               const isMine = msg.sender === user;
@@ -66,8 +76,8 @@ const MessagePage = ({ messages, loading, id }: Props) => {
                   `}
                 >
                   {msg.text}
-                  <sub className="px-1">
-                    {dayjs(msg.createdAt).format("HH:mm:ss")}
+                  <sub className="pl-1 text-[8px]">
+                    {dayjs(msg.createdAt).format("ddd, HH:mm")}
                   </sub>
                 </li>
               );

@@ -1,15 +1,17 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import LoadingEffect from "../components/LoadingEffect";
 import UserContext from "../context/UserContext";
-import { FaSignOutAlt } from "react-icons/fa";
+import { FaSignOutAlt, FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import ChatPage from "../components/ChatPage";
 
 const Home = () => {
+  const mouseClickSound = new Audio("/Sounds/mouse-click.mp3");
   const { loading, userName, refreshUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const [sound, setSound] = useState(true);
 
   const handleLogout = async () => {
     try {
@@ -44,10 +46,29 @@ const Home = () => {
                 />
                 <div className="font-semibold">{userName}</div>
               </div>
-              <FaSignOutAlt
-                onClick={handleLogout}
-                className="text-2xl hover:text-red-600 cursor-pointer"
-              />
+              <div className="flex gap-5 items-center">
+                <FaSignOutAlt
+                  onClick={handleLogout}
+                  className="text-xl hover:text-red-600 cursor-pointer"
+                />
+                {sound ? (
+                  <FaVolumeUp
+                    onClick={() => {
+                      setSound(false);
+                      mouseClickSound.play();
+                    }}
+                    className="text-xl cursor-pointer"
+                  />
+                ) : (
+                  <FaVolumeMute
+                    onClick={() => {
+                      setSound(true);
+                      mouseClickSound.play();
+                    }}
+                    className="text-xl cursor-pointer"
+                  />
+                )}
+              </div>
             </div>
           )}
         </div>
