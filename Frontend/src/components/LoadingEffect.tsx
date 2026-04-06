@@ -1,9 +1,9 @@
-import { Slab } from "react-loading-indicators";
+import { Slab, ThreeDot } from "react-loading-indicators";
 
 const LoadingEffect = () => {
   return (
     <>
-      <Slab color="#342d2d" size="small" text="" textColor="" />
+      <ThreeDot color="white" size="small" />
     </>
   );
 };
