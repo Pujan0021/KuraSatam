@@ -8,9 +8,9 @@ import { useNavigate } from "react-router";
 import ChatPage from "../components/ChatPage";
 
 const Home = () => {
-  const { loading, userName } = useContext(UserContext);
-
+  const { loading, userName, refreshUser } = useContext(UserContext);
   const navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
       await axios.post(
@@ -19,6 +19,7 @@ const Home = () => {
         { withCredentials: true },
       );
       toast.success("Logout successfully");
+      refreshUser();
       navigate("/login");
     } catch {
       toast.error("Logout failed!");

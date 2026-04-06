@@ -1,13 +1,15 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router";
+import UserContext from "../context/UserContext";
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
+  const { refreshUser } = useContext(UserContext);
+
   const handleSubmitBtn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!email || !password) {
@@ -20,9 +22,10 @@ const LogIn = () => {
         withCredentials: true,
       });
       toast.success("Login Successfully");
+      await refreshUser();
       navigate("/");
     } catch (error) {
-      console.log(e, "Error submitting data");
+      console.log(error, "Error submitting data");
       toast.error("Login Failed");
     }
   };

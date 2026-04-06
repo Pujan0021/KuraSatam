@@ -12,13 +12,12 @@ const MessageInput = ({ id }: Props) => {
   const [loading, setLoading] = useState(false);
   const [sendMessage, setSendMessage] = useState<string>("");
 
-  // console.log(id);
   const handleSendMessage = async () => {
     if (!sendMessage.trim()) {
       toast.error("Message cannot be empty");
       return;
     }
-    // console.log(sendMessage);
+
     setLoading(true);
     try {
       await axios.post(
@@ -44,6 +43,7 @@ const MessageInput = ({ id }: Props) => {
         className="bg-white p-1 rounded-sm text-black w-70 focus:outline-none pl-2"
         onChange={(e) => setSendMessage(e.target.value)}
         value={sendMessage}
+        onKeyDown={(e) => (e.key == "Enter" ? handleSendMessage() : null)}
       />
       {loading ? (
         <LoadingEffect />
