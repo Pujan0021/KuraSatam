@@ -6,20 +6,25 @@ const jwt = require("jsonwebtoken");
 
 router.post("/sendMessage/:id", async (req, res) => {
     const receiver = req.params.id;
+    const token = req.cookies?.token;
 
     try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const sender = decoded.id;
+
         const { text } = req.body;
 
         const newMessage = new Message({
-            text: text,
-            receiver: receiver
+            text,
+            sender,
+            receiver
         });
 
         await newMessage.save();
 
         res.status(201).json({
             success: true,
-            message: newMessage,
+            message: newMessage
         });
     } catch (err) {
         res.status(500).json({ success: false, message: "Server error", error: err.message });
@@ -28,8 +33,17 @@ router.post("/sendMessage/:id", async (req, res) => {
 router.get("/message/:id", async (req, res) => {
     try {
         const receiver = req.params.id;
-        console.log(receiver);
-        const messages = await Message.find({ receiver });
+        const token = req.cookies?.token;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const sender = decoded.id;
+
+        const messages = await Message.find({
+            $or: [
+                { sender, receiver },
+                { sender: receiver, receiver: sender }
+            ]
+        }).sort({ createdAt: 1 });
+
         res.json(messages);
     } catch (err) {
         res.status(500).json({ success: false, message: "Server error", error: err.message });

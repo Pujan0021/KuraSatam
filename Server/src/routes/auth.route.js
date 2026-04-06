@@ -91,7 +91,7 @@ router.post("/signin", async (req, res) => {
         res.status(200).json({
             success: true,
             message: "SignIn successful",
-            user: { name: user.name, email: user.email },
+            data: { name: user.name, email: user.email },
             token: token
         });
     } catch (e) {
@@ -134,7 +134,7 @@ router.get('/profile', authMiddleware, (req, res) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
-        res.status(200).json({ name: decoded.name, id: decoded._id });
+        res.status(200).json({ id: decoded.id, name: decoded.name, email: decoded.email });
     } catch (err) {
         res.status(401).json({ error: 'Invalid token' });
     }
