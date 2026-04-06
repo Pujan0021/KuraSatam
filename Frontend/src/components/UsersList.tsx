@@ -17,7 +17,7 @@ const UserList = ({ friends, loading, handleProfileClick }: Props) => {
   return (
     <div className="bg-cyan-900 mx-1 p-5 rounded-2xl text-white w-55">
       {loading ? (
-        <div className="flex items-center justify-center h-60">
+        <div className="flex items-center justify-center h-60 overflow-y-scroll [&::-webkit-scrollbar]:hidden">
           <LoadingEffect />
         </div>
       ) : (

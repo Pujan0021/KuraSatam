@@ -26,7 +26,7 @@ const LogIn = () => {
       navigate("/");
     } catch (error) {
       console.log(error, "Error submitting data");
-      toast.error("Login Failed");
+      toast.error("Wrong credentials!");
     }
   };
 

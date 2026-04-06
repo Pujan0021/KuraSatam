@@ -5,6 +5,7 @@ import SelectUser from "./SelectUser";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 
 interface Message {
   _id: string;
@@ -38,7 +39,7 @@ const MessagePage = ({ messages, loading, id }: Props) => {
         setUser(data.id);
       } catch (error: any) {
         toast.error(error.response?.data?.message || "Unauthenticated");
-        navigate("/");
+        navigate("/login");
       }
     };
     fetchUser();
@@ -56,9 +57,6 @@ const MessagePage = ({ messages, loading, id }: Props) => {
         <ol className="h-60 overflow-y-scroll [&::-webkit-scrollbar]:hidden">
           {messages && messages.length > 0 ? (
             messages.map((msg) => {
-              // console.log(msg.sender, ": sender");
-              // console.log(user, ":User");
-              // console.log(msg.receiver, " : msg receiver");
               const isMine = msg.sender === user;
               return (
                 <li
@@ -68,6 +66,9 @@ const MessagePage = ({ messages, loading, id }: Props) => {
                   `}
                 >
                   {msg.text}
+                  <sub className="px-1">
+                    {dayjs(msg.createdAt).format("HH:mm:ss")}
+                  </sub>
                 </li>
               );
             })
