@@ -4,16 +4,28 @@ import toast from "react-hot-toast";
 interface UserContextType {
   userName: string;
   loading: boolean;
+  sound: boolean;
   refreshUser: () => void;
+  playSound: () => void;
 }
 
 const UserContext = createContext<UserContextType>({
   userName: "Guest",
   loading: true,
+  sound: true,
   refreshUser: () => {},
+  playSound: () => {},
 });
 
+const mouseClickSound = new Audio("/Sounds/mouse-click.mp3");
+
 export const Context = ({ children }: { children: React.ReactNode }) => {
+  const [sound, setSound] = useState(true);
+
+  const toggleSound = () => {
+    mouseClickSound.play();
+  };
+
   const [userName, setUsername] = useState("Guest");
   const [loading, setLoading] = useState(true);
 
@@ -40,7 +52,16 @@ export const Context = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ loading, userName, refreshUser: fetchUser }}>
+    <UserContext.Provider
+      value={{
+        loading,
+        userName,
+        refreshUser: fetchUser,
+        playSound: toggleSound,
+        sound,
+        setSound,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

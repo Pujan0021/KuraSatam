@@ -61,7 +61,7 @@ const LogIn = () => {
             />
 
             <input
-              className="bg-blue-700 w-full mt-8 rounded-sm  text-white px-4 py-1 font-semibold"
+              className="bg-blue-700 w-full mt-8 rounded-sm hover:cursor-pointer  text-white px-4 py-1 font-semibold"
               type="submit"
               value="Login"
             />

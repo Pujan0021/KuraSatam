@@ -1,14 +1,26 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { FaPaperPlane } from "react-icons/fa";
 import LoadingEffect from "./LoadingEffect";
+import UserContext from "../context/UserContext";
 
 interface Props {
   id: string;
 }
 
 const MessageInput = ({ id }: Props) => {
+  const { sound } = useContext(UserContext);
+  console.log(sound);
+  const mouseClickSound = new Audio("/Sounds/notification.mp3");
+  const key1 = new Audio("/Sounds/keystroke1.mp3");
+  const key2 = new Audio("/Sounds/keystroke2.mp3");
+  const key3 = new Audio("/Sounds/keystroke3.mp3");
+  const key4 = new Audio("/Sounds/keystroke4.mp3");
+
+  const audioList = [key1, key2, key3, key4];
+  const randomSound = Math.floor(Math.random() * 4);
+  console.log(randomSound);
   const [loading, setLoading] = useState(false);
   const [sendMessage, setSendMessage] = useState<string>("");
 
@@ -25,6 +37,9 @@ const MessageInput = ({ id }: Props) => {
         { text: sendMessage },
         { withCredentials: true },
       );
+      {
+        sound ? mouseClickSound.play() : null;
+      }
       setSendMessage("");
       toast.success("Message sent successfully");
     } catch (error: any) {
@@ -36,12 +51,20 @@ const MessageInput = ({ id }: Props) => {
     }
   };
 
+  const playSound = () => {
+    {
+      sound ? audioList[randomSound].play() : null;
+    }
+  };
+
   return (
     <div className="flex justify-between items-center float-end rounded-sm w-full">
       <input
         type="text"
         className="bg-white p-1 rounded-sm text-black w-70 focus:outline-none pl-2"
-        onChange={(e) => setSendMessage(e.target.value)}
+        onChange={(e) => {
+          (setSendMessage(e.target.value), playSound());
+        }}
         value={sendMessage}
         onKeyDown={(e) => (e.key == "Enter" ? handleSendMessage() : null)}
       />

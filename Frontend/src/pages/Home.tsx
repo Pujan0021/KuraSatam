@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import LoadingEffect from "../components/LoadingEffect";
 import UserContext from "../context/UserContext";
 import { FaSignOutAlt, FaVolumeMute, FaVolumeUp } from "react-icons/fa";
@@ -8,10 +8,9 @@ import { useNavigate } from "react-router";
 import ChatPage from "../components/ChatPage";
 
 const Home = () => {
-  const mouseClickSound = new Audio("/Sounds/mouse-click.mp3");
-  const { loading, userName, refreshUser } = useContext(UserContext);
+  const { loading, userName, refreshUser, playSound, setSound, sound } =
+    useContext(UserContext);
   const navigate = useNavigate();
-  const [sound, setSound] = useState(true);
 
   const handleLogout = async () => {
     try {
@@ -55,7 +54,7 @@ const Home = () => {
                   <FaVolumeUp
                     onClick={() => {
                       setSound(false);
-                      mouseClickSound.play();
+                      playSound();
                     }}
                     className="text-xl cursor-pointer"
                   />
@@ -63,7 +62,7 @@ const Home = () => {
                   <FaVolumeMute
                     onClick={() => {
                       setSound(true);
-                      mouseClickSound.play();
+                      playSound();
                     }}
                     className="text-xl cursor-pointer"
                   />
