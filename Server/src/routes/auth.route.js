@@ -126,19 +126,30 @@ router.post("/logout", (req, res) => {
 
 
 
-router.get('/profile', authMiddleware, (req, res) => {
+router.get('/profile', authMiddleware, async (req, res) => {
     const token = req.cookies?.token;
-    if (!token) return res.status(401).json({ success: false, message: "Token not found" });
-    // console.log("token", token)
+    if (!token) {
+        return res.status(401).json({ success: false, message: "Token not found" });
+    }
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
-        res.status(200).json({ id: decoded.id, name: decoded.name, email: decoded.email });
+
+
+        const user = await User.findById(decoded.id);
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        res.status(200).json({
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            imgURL: user.imgURL,   // ✅ always return the latest image
+        });
     } catch (err) {
-        res.status(401).json({ error: 'Invalid token' });
+        res.status(401).json({ success: false, message: "Invalid token" });
     }
 });
-
 
 module.exports = router;

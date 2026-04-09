@@ -3,12 +3,14 @@ import { useState, useContext } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router";
 import UserContext from "../context/UserContext";
+import LoadingEffect from "../components/LoadingEffect";
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { refreshUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmitBtn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -17,6 +19,7 @@ const LogIn = () => {
       return;
     }
     const formData = { email, password };
+    setLoading(true);
     try {
       await axios.post("http://localhost:5000/api/auth/signin", formData, {
         withCredentials: true,
@@ -27,6 +30,8 @@ const LogIn = () => {
     } catch (error) {
       console.log(error, "Error submitting data");
       toast.error("Wrong credentials!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,11 +65,17 @@ const LogIn = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <input
-              className="bg-blue-700 w-full mt-8 rounded-sm hover:cursor-pointer  text-white px-4 py-1 font-semibold"
-              type="submit"
-              value="Login"
-            />
+            {!loading ? (
+              <input
+                className="bg-blue-700 w-full mt-8 rounded-sm hover:cursor-pointer  text-white px-4 py-1 font-semibold"
+                type="submit"
+                value="Login"
+              />
+            ) : (
+              <div className="flex justify-center  mt-8  bg-blue-700 w-full px-4 py-2.5  rounded-sm">
+                <LoadingEffect />
+              </div>
+            )}
           </form>
           <div className="flex flex-row justify-center gap-4 mt-5 text-sm ">
             <p>Don't have an Account?</p>

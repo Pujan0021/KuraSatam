@@ -2,10 +2,13 @@ import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router";
+import LoadingEffect from "../components/LoadingEffect";
+
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -15,6 +18,7 @@ const SignUp = () => {
       toast.error("All fields are required");
       return;
     }
+    setLoading(true);
     const formData = { name, email, password };
     try {
       await axios.post("http://localhost:5000/api/auth/signup", formData);
@@ -22,6 +26,8 @@ const SignUp = () => {
       navigate("/login");
     } catch (error) {
       toast.error("Error creating an account");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,12 +76,17 @@ const SignUp = () => {
                 required
               />
             </label>
-
-            <input
-              className="bg-blue-700 w-full mt-8 rounded-sm  hover:cursor-pointer text-white px-4 py-1 font-semibold"
-              type="submit"
-              value="SignUp"
-            />
+            {!loading ? (
+              <input
+                className="bg-blue-700 w-full mt-8 rounded-sm  hover:cursor-pointer text-white px-4 py-1 font-semibold"
+                type="submit"
+                value="SignUp"
+              />
+            ) : (
+              <div className="flex justify-center  mt-8  bg-blue-700 w-full px-4 py-2.5  rounded-sm">
+                <LoadingEffect />
+              </div>
+            )}
           </form>
           <div className="flex flex-row justify-center gap-4 mt-5 text-sm ">
             <p>Already have an Account?</p>

@@ -84,7 +84,7 @@ const MessagePage = ({ messages, loading, id }: Props) => {
             })
           ) : (
             <div className="flex justify-center items-center m-auto h-60">
-              <p>No messages</p>
+              <p>No message</p>
             </div>
           )}
         </ol>

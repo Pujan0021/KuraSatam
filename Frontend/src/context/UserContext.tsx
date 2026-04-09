@@ -5,29 +5,50 @@ interface UserContextType {
   userName: string;
   loading: boolean;
   sound: boolean;
+  userPreferredSound: boolean;
+  userId: string;
+  userImg: string;
   refreshUser: () => void;
   playSound: () => void;
+  setSound: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UserContext = createContext<UserContextType>({
   userName: "Guest",
   loading: true,
   sound: true,
+  userPreferredSound: true,
+  userId: null,
+  userImg: null,
   refreshUser: () => {},
   playSound: () => {},
+  setSound: () => {},
 });
 
 const mouseClickSound = new Audio("/Sounds/mouse-click.mp3");
 
 export const Context = ({ children }: { children: React.ReactNode }) => {
-  const [sound, setSound] = useState(true);
-
-  const toggleSound = () => {
-    mouseClickSound.play();
-  };
+  const [sound, setSound] = useState<boolean>(() => {
+    const saved = localStorage.getItem("Sound");
+    return saved ? JSON.parse(saved) : true;
+  });
 
   const [userName, setUsername] = useState("Guest");
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
+  const [userImg, setUserImg] = useState(null);
+
+  const userPreferredSound = sound;
+
+  useEffect(() => {
+    localStorage.setItem("Sound", JSON.stringify(sound));
+  }, [sound]);
+
+  const playSound = () => {
+    if (sound) {
+      mouseClickSound.play();
+    }
+  };
 
   const fetchUser = async () => {
     setLoading(true);
@@ -38,9 +59,11 @@ export const Context = ({ children }: { children: React.ReactNode }) => {
       });
       const data = await res.json();
       setUsername(data.name || "Guest");
+      setUserImg(data.imgURL);
+      setUserId(data.id);
     } catch (error) {
-      console.log(error, "Error occured fetching user data");
-      toast.error("Error Occured Fetching User Detail");
+      console.log(error, "Error occurred fetching user data");
+      toast.error("Error Occurred Fetching User Detail");
       setUsername("Guest");
     } finally {
       setLoading(false);
@@ -57,9 +80,12 @@ export const Context = ({ children }: { children: React.ReactNode }) => {
         loading,
         userName,
         refreshUser: fetchUser,
-        playSound: toggleSound,
+        playSound,
         sound,
         setSound,
+        userPreferredSound,
+        userId,
+        userImg,
       }}
     >
       {children}
