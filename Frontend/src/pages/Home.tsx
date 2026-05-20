@@ -121,10 +121,6 @@ const Home = () => {
             </div>
 
             <div className="flex gap-5 items-center">
-              <FaSignOutAlt
-                onClick={handleLogout}
-                className="text-xl hover:text-red-600 cursor-pointer"
-              />
               {userPreferredSound ? (
                 <FaVolumeUp
                   onClick={() => {
@@ -142,6 +138,10 @@ const Home = () => {
                   className="text-xl cursor-pointer transition-all duration-75 ease-in-out"
                 />
               )}
+              <FaSignOutAlt
+                onClick={handleLogout}
+                className="text-xl hover:text-red-600 cursor-pointer"
+              />
             </div>
           </div>
         </div>
