@@ -9,13 +9,27 @@ const authMiddleware = require("./src/middleware/auth.middleware.js");
 const cors = require("cors");
 require("dotenv").config();
 const PORT = process.env.PORT;
+const http = require("http");
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:5173",
+        credentials: true
+    }
+});
+
+
+io.on('connection', (socket) => {
+    console.log("a user connected", socket.id)
+})
 
 app.use(cookieParser());
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true
 }))
-// app.use(express.json());
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use("/api/auth", authRouter);
@@ -35,7 +49,7 @@ const startServer = async () => {
         console.log("Error occured creating a server", e);
         process.exit(1);
     }
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
         console.log("Server started at ", PORT);
     })
 

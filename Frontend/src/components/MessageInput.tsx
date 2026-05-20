@@ -13,14 +13,18 @@ const MessageInput = ({ id }: Props) => {
   const { sound } = useContext(UserContext);
   console.log(sound);
   const mouseClickSound = new Audio("/Sounds/notification.mp3");
+  mouseClickSound.currentTime = 0;
   const key1 = new Audio("/Sounds/keystroke1.mp3");
   const key2 = new Audio("/Sounds/keystroke2.mp3");
   const key3 = new Audio("/Sounds/keystroke3.mp3");
   const key4 = new Audio("/Sounds/keystroke4.mp3");
 
   const audioList = [key1, key2, key3, key4];
-  const randomSound = Math.floor(Math.random() * 4);
-  console.log(randomSound);
+
+  audioList.forEach((audio) => {
+    audio.load();
+  });
+
   const [loading, setLoading] = useState(false);
   const [sendMessage, setSendMessage] = useState<string>("");
 
@@ -52,16 +56,16 @@ const MessageInput = ({ id }: Props) => {
   };
 
   const playSound = () => {
-    {
-      sound ? audioList[randomSound].play() : null;
-    }
+    const randomSound = Math.floor(Math.random() * audioList.length);
+    audioList[randomSound].currentTime = 0;
+    sound ? audioList[randomSound].play() : null;
   };
 
   return (
     <div className="flex justify-between items-center float-end rounded-sm w-full">
       <input
         type="text"
-        className="bg-white p-1 rounded-sm text-black w-70 focus:outline-none pl-2"
+        className="bg-white p-1 rounded-sm text-black w-35 md:w-70 focus:outline-none pl-2"
         onChange={(e) => {
           (setSendMessage(e.target.value), playSound());
         }}
@@ -72,7 +76,7 @@ const MessageInput = ({ id }: Props) => {
         <LoadingEffect />
       ) : (
         <FaPaperPlane
-          className="hover:cursor-pointer mx-5"
+          className="hover:cursor-pointer mx-1 md:mx-5"
           onClick={handleSendMessage}
         />
       )}

@@ -27,7 +27,7 @@ const MessagePage = ({ messages, loading, id }: Props) => {
   const navigate = useNavigate();
   const [user, setUser] = useState<string | null>(null);
 
-  useEffect(() => {
+  const reloadMessages = useEffect(() => {
     const container = document.getElementById("message-container");
     if (container) {
       container.scrollTop = container.scrollHeight;
@@ -53,7 +53,7 @@ const MessagePage = ({ messages, loading, id }: Props) => {
   }, []);
 
   return (
-    <div className="bg-cyan-900 p-5 rounded-2xl text-white w-95">
+    <div className="bg-cyan-900 p-2 md:p-5 rounded-2xl w-50 text-white md:w-95 border border-amber-50">
       {loading ? (
         <div className="flex items-center justify-center h-60">
           <LoadingEffect />
@@ -71,12 +71,12 @@ const MessagePage = ({ messages, loading, id }: Props) => {
               return (
                 <li
                   key={msg._id}
-                  className={`px-2 py-2 rounded-lg font-semibold text-sm mb-2 w-max shadow-xs
+                  className={`px-1 py-1 text-[10px] md:px-2 md:py-2 rounded-lg md:font-semibold md:text-sm mb-1.5 md:mb-2 w-max shadow-xs
                     ${isMine ? "bg-blue-600 ml-auto" : "bg-gray-800"}
                   `}
                 >
                   {msg.text}
-                  <sub className="pl-1 text-[8px]">
+                  <sub className="pl-1 text-[4px] md:text-[8px]">
                     {dayjs(msg.createdAt).format("ddd, HH:mm")}
                   </sub>
                 </li>
@@ -89,7 +89,7 @@ const MessagePage = ({ messages, loading, id }: Props) => {
           )}
         </ol>
       )}
-      {id && <MessageInput id={id} />}
+      {id && <MessageInput id={id} messages={reloadMessages} />}
     </div>
   );
 };

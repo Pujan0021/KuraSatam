@@ -1,5 +1,6 @@
 import { useContext, useRef, useState, useEffect } from "react";
-import LoadingEffect from "../components/LoadingEffect";
+import { FourSquare, ThreeDot } from "react-loading-indicators";
+// import LoadingEffect from "../components/LoadingEffect";
 import UserContext from "../context/UserContext";
 import { FaSignOutAlt, FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 import toast from "react-hot-toast";
@@ -21,6 +22,7 @@ const Home = () => {
 
   const [loadingImg, setLoadingImg] = useState(false);
   const muteSound = new Audio("Sounds/mouse-click.mp3");
+  muteSound.currentTime = 0;
   const defaultImg = "img/profile.jpg";
   const [selectedImg, setSelectedImg] = useState(null);
   const imgFile = useRef(null);
@@ -81,19 +83,15 @@ const Home = () => {
   };
 
   return (
-    <section className="bg-cyan-950 text-white">
-      <div className="container h-screen m-auto flex flex-col justify-center items-center gap-1 w-full">
-        <div className="bg-cyan-900 mx-3 p-2 rounded-2xl w-150">
-          {loading ? (
-            <div className="flex items-center justify-center">
-              <LoadingEffect />
-            </div>
-          ) : (
-            <div className="flex justify-between items-center px-5">
+    <section className="bg-cyan-950 text-white ">
+      <div className="container h-screen m-auto flex flex-col justify-center items-center gap-1 w-full ">
+        <div className="bg-cyan-900 mx-1 md:mx-3 md:p-2 rounded-2xl w-75 md:w-150 border border-amber-50">
+          <div className="flex justify-between items-center px-5">
+            <div className="flex justify-between items-center gap-2">
               {!loadingImg ? (
-                <div className="flex justify-between items-center gap-2">
+                <>
                   <button
-                    className="relative hover:cursor-pointer w-15 h-15 rounded-full flex items-center justify-center"
+                    className="relative hover:cursor-pointer w-15 h-15 rounded-full flex items-center justify-center transition-all duration-75 ease-in-out"
                     onClick={() => imgFile.current.click()}
                   >
                     <img
@@ -113,39 +111,39 @@ const Home = () => {
                     onChange={handleFileUpload}
                     className="hidden"
                   />
-                  <div className="font-semibold">{userName}</div>
-                </div>
+                </>
               ) : (
-                <button className="relative hover:cursor-pointer w-15 h-15 rounded-full text-sm flex items-center justify-center transition">
-                  Loading ..
+                <button className="relative hover:cursor-pointer w-15 h-15 rounded-full text-sm flex items-center justify-center transition-all duration-75 ease-in-out">
+                  <FourSquare color="white" size="small" text="" textColor="" />
                 </button>
               )}
-
-              <div className="flex gap-5 items-center">
-                <FaSignOutAlt
-                  onClick={handleLogout}
-                  className="text-xl hover:text-red-600 cursor-pointer"
-                />
-                {userPreferredSound ? (
-                  <FaVolumeUp
-                    onClick={() => {
-                      setSound(false);
-                      muteSound.play();
-                    }}
-                    className="text-xl cursor-pointer"
-                  />
-                ) : (
-                  <FaVolumeMute
-                    onClick={() => {
-                      setSound(true);
-                      muteSound.play();
-                    }}
-                    className="text-xl cursor-pointer"
-                  />
-                )}
-              </div>
+              <div className="font-semibold">{userName}</div>
             </div>
-          )}
+
+            <div className="flex gap-5 items-center">
+              <FaSignOutAlt
+                onClick={handleLogout}
+                className="text-xl hover:text-red-600 cursor-pointer"
+              />
+              {userPreferredSound ? (
+                <FaVolumeUp
+                  onClick={() => {
+                    setSound(false);
+                    muteSound.play();
+                  }}
+                  className="text-xl cursor-pointer transition-all duration-75 ease-in-out"
+                />
+              ) : (
+                <FaVolumeMute
+                  onClick={() => {
+                    setSound(true);
+                    muteSound.play();
+                  }}
+                  className="text-xl cursor-pointer transition-all duration-75 ease-in-out"
+                />
+              )}
+            </div>
+          </div>
         </div>
         <ChatPage />
       </div>

@@ -18,7 +18,7 @@ interface Props {
 
 const UserList = ({ friends, loading, handleProfileClick }: Props) => {
   return (
-    <div className="bg-cyan-900 mx-1 p-5 rounded-2xl text-white w-55">
+    <div className="bg-cyan-900 mx-1 p-1 md:p-5 rounded-2xl text-white w-25 md:w-55 border border-amber-50">
       {loading ? (
         <div className="flex items-center justify-center h-70 overflow-y-scroll [&::-webkit-scrollbar]:hidden">
           <LoadingEffect />
@@ -29,13 +29,13 @@ const UserList = ({ friends, loading, handleProfileClick }: Props) => {
             friends.map((friend) => (
               <div
                 onClick={() => handleProfileClick(friend._id)}
-                className="flex bg-gray-800 p-2 mb-1.5 rounded-xl text-center items-center gap-2 hover:cursor-pointer hover:bg-gray-700 transition-colors"
+                className="flex  bg-gray-800 p-2 mb-1.5 rounded-xl text-center items-center gap-2 hover:cursor-pointer hover:bg-gray-700 transition-colors"
                 key={friend._id}
               >
                 <img
                   src={friend.imgURL ? friend.imgURL : defaultImg}
                   alt="profile-pic"
-                  className="rounded-full object-cover h-10 w-10"
+                  className="rounded-full object-cover h-5 w-5 md:h-10 md:w-10"
                 />
                 <div className="font-semibold truncate">{friend.name}</div>
               </div>

@@ -70,7 +70,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="flex justify-center w-150 p-0 m-0">
+    <div className="flex justify-center w-75 md:w-150 p-0 m-0 ">
       <UsersList
         friends={friends}
         loading={loadingUsers}

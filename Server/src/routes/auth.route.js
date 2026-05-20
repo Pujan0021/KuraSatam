@@ -37,7 +37,7 @@ router.post("/signup", async (req, res) => {
             user: { name, email }
         });
     } catch (e) {
-        console.error(e);
+        console.log(e);
         res.status(500).json({
             success: false,
             message: "Failed to signup"
