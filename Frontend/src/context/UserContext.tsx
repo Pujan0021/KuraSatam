@@ -52,7 +52,7 @@ export const Context = ({ children }: { children: React.ReactNode }) => {
   const fetchUser = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/auth/profile", {
+      const res = await fetch("https://kurasatam-backend.onrender.com/api/auth/profile", {
         method: "GET",
         credentials: "include",
       });
