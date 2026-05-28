@@ -37,7 +37,7 @@ const MessageInput = ({ id }: Props) => {
     setLoading(true);
     try {
       await axios.post(
-        `http://localhost:5000/api/sendMessage/${id}`,
+        `https://kurasatam-backend.onrender.com/api/sendMessage/${id}`,
         { text: sendMessage },
         { withCredentials: true },
       );
