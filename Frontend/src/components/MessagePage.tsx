@@ -38,7 +38,7 @@ const MessagePage = ({ messages, loading, id }: Props) => {
     const fetchUser = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5000/api/auth/profile",
+          "https://kurasatam-backend.onrender.com/api/auth/profile",
           {
             withCredentials: true,
           },
