@@ -21,7 +21,7 @@ const SignUp = () => {
     setLoading(true);
     const formData = { name, email, password };
     try {
-      await axios.post("http://localhost:5000/api/auth/signup", formData);
+      await axios.post("https://kurasatam-backend.onrender.com/api/auth/signup", formData);
       toast.success("Account created Successfully");
       navigate("/login");
     } catch (err) {
