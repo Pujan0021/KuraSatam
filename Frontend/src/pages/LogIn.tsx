@@ -21,7 +21,7 @@ const LogIn = () => {
     const formData = { email, password };
     setLoading(true);
     try {
-      await axios.post("http://localhost:5000/api/auth/signin", formData, {
+      await axios.post("https://kurasatam-backend.onrender.com/api/auth/signin", formData, {
         withCredentials: true,
       });
       toast.success("Login Successfully");
