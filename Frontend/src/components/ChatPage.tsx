@@ -51,7 +51,7 @@ const ChatPage = () => {
       );
       setFriends(data);
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Error fetching users");
+      console.log("Error occured!");
     } finally {
       setLoadingUsers(false);
     }

@@ -1,6 +1,5 @@
 import { useContext, useRef, useState, useEffect } from "react";
-import { FourSquare, ThreeDot } from "react-loading-indicators";
-// import LoadingEffect from "../components/LoadingEffect";
+import { FourSquare } from "react-loading-indicators";
 import UserContext from "../context/UserContext";
 import { FaSignOutAlt, FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 import toast from "react-hot-toast";
@@ -14,7 +13,6 @@ const Home = () => {
     userId,
     userName,
     userImg,
-    loading,
     refreshUser,
     setSound,
     userPreferredSound,
@@ -127,7 +125,7 @@ const Home = () => {
                     setSound(false);
                     muteSound.play();
                   }}
-                  className="text-xl cursor-pointer transition-all duration-75 ease-in-out"
+                  className="text-xl cursor-pointer transition-all duration-75 ease-in-out hover:text-green-500"
                 />
               ) : (
                 <FaVolumeMute
@@ -135,7 +133,7 @@ const Home = () => {
                     setSound(true);
                     muteSound.play();
                   }}
-                  className="text-xl cursor-pointer transition-all duration-75 ease-in-out"
+                  className="text-xl cursor-pointer transition-all duration-75 ease-in-out hover:text-red-500"
                 />
               )}
               <FaSignOutAlt

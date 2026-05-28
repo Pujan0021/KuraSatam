@@ -53,7 +53,7 @@ router.get("/message/:id", async (req, res) => {
 router.get("/users", async (req, res) => {
     console.log(req.user.id)
     try {
-        const users = await Users.find({ _id: { $ne: req.user.id } });
+        const users = await Users.find({ _id: { $ne: req.user.id } }).select("-password");
         res.status(200).json(users)
     } catch (err) {
         console.log(err, "Error occured!")

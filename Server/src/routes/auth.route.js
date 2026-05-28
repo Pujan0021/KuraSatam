@@ -145,7 +145,7 @@ router.get('/profile', authMiddleware, async (req, res) => {
             id: user._id,
             name: user.name,
             email: user.email,
-            imgURL: user.imgURL,   // ✅ always return the latest image
+            imgURL: user.imgURL,  
         });
     } catch (err) {
         res.status(401).json({ success: false, message: "Invalid token" });

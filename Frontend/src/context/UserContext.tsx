@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 interface UserContextType {
   userName: string;
@@ -63,7 +62,7 @@ export const Context = ({ children }: { children: React.ReactNode }) => {
       setUserId(data.id);
     } catch (error) {
       console.log(error, "Error occurred fetching user data");
-      toast.error("Error Occurred Fetching User Detail");
+      // toast.error("Error Occurred Fetching User Detail");
       setUsername("Guest");
     } finally {
       setLoading(false);

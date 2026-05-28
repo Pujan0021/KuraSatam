@@ -7,22 +7,10 @@ const dbConnect = require("./src/config/dbConnect");
 const cookieParser = require("cookie-parser");
 const authMiddleware = require("./src/middleware/auth.middleware.js");
 const cors = require("cors");
+const { server } = require("./src/utils/socket.js");
 require("dotenv").config();
 const PORT = process.env.PORT;
-const http = require("http");
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server, {
-    cors: {
-        origin: "http://localhost:5173",
-        credentials: true
-    }
-});
 
-
-io.on('connection', (socket) => {
-    console.log("a user connected", socket.id)
-})
 
 app.use(cookieParser());
 app.use(cors({
@@ -46,10 +34,10 @@ const startServer = async () => {
         await dbConnect();
 
     } catch (e) {
-        console.log("Error occured creating a server", e);
+        console.log("Error occured connecting a database", e);
         process.exit(1);
     }
-    server.listen(PORT, () => {
+    app.listen(PORT, () => {
         console.log("Server started at ", PORT);
     })
 
