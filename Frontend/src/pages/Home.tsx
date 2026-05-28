@@ -45,7 +45,7 @@ const Home = () => {
       formData.append("profileImg", compressedFile);
 
       const res = await axios.patch(
-        `http://localhost:5000/api/${userId}`,
+        `https://kurasatam-backend.onrender.com/${userId}`,
         formData,
         {
           withCredentials: true,
@@ -67,7 +67,7 @@ const Home = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/auth/logout",
+        "https://kurasatam-backend.onrender.com/api/auth/logout",
         {},
         { withCredentials: true },
       );
