@@ -31,7 +31,7 @@ const ChatPage = () => {
     setLoading(true);
     try {
       const { data } = await axios.get<Message[]>(
-        `http://localhost:5000/api/message/${chatId}`,
+        `https://kurasatam-backend.onrender.com/api/message/${chatId}`,
         { withCredentials: true },
       );
       setMessages(data);
